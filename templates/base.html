@@ -1,9 +1,11 @@
+<!DOCTYPE html>
 <html>
 <head>
     <link rel="stylesheet"
           href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.css"/>
     <link rel="stylesheet" href="/static/css/site.css"/>
 </head>
+
 
 <body>
 
@@ -31,20 +33,20 @@
     </div>
 </div>
 
+
 <div class="container">
 
-  <!-- Show flashed messages -->
-  {% with messages = get_flashed_messages() %}
-      {% for message in messages %}
-          <div class="alert alert-warning">{{ message }}</div>
-      {% endfor %}
-  {% endwith %}
+    <!-- Show flashed messages -->
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            <div class="alert alert-warning">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
 
-  <!-- This is where the main content goes. -->
-  {% block body %}
-      BODY OF PAGE GOES HERE VIA INHERITANCE
-  {% endblock %}
-
+    <!-- This is where the main content goes. -->
+    {% block body %}
+        BODY OF PAGE GOES HERE VIA INHERITANCE
+    {% endblock %}
 </div>
 
 </body>

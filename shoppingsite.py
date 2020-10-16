@@ -14,7 +14,11 @@ import melons
 app = Flask(__name__)
 
 # A secret key is needed to use Flask sessioning features
-app.secret_key = "b_5#y2LF4Q8znxec]/"
+print('hi', os.environ.get("SECRET_KEY"))
+
+
+
+app.secret_key = "b_5#y2LF4Q8zxec]/"
 
 # Normally, if you refer to an undefined variable in a Jinja template,
 # Jinja silently ignores this. This makes debugging difficult, so we'll
@@ -60,6 +64,19 @@ def show_melon(melon_id):
 def show_shopping_cart():
     """Display content of shopping cart."""
 
+    cart = session["cart"]
+    total_cost = 0
+    melonlist = []
+    for melon_id in cart.keys():
+        melon = melons.get_by_id(melon_id)
+        melon_total = melon.price * cart[melon]
+        total_cost += melon_total
+        melon.quantity = cart[melon]
+        melon.cost = melon_total
+        melonlist.append(melon)
+    print(melonlist)
+    return render_template("cart.html")
+
     # TODO: Display the contents of the shopping cart.
 
     # The logic here will be something like:
@@ -78,7 +95,7 @@ def show_shopping_cart():
     # Make sure your function can also handle the case wherein no cart has
     # been added to the session
 
-    return render_template("cart.html")
+    
 
 @app.route("/add_to_cart/<melon_id>")
 def add_to_cart(melon_id):
@@ -91,15 +108,17 @@ def add_to_cart(melon_id):
     if session.get("cart", {}) == {}:
 
         session["cart"] = {}
-
-    else:
         
-        if melon_id in session["cart"].items():
-            session["cart"][melon_id] += 1
-        else:
-            session["cart"][melon_id] = 1
+
+    if melon_id in session["cart"]:
+        session["cart"][melon_id] += 1
+        
+    else:
+        session["cart"][melon_id] = 1
     
-    
+    print(session["cart"])
+
+    flash("Melon successfully added to cart.")    
 
     return render_template("cart.html")
        
@@ -112,7 +131,6 @@ def add_to_cart(melon_id):
     # - flash a success message
     # - redirect the user to the cart page
 
-    return "Oops! This needs to be implemented!"
 
 
 @app.route("/login", methods=["GET"])
